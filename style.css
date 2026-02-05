@@ -12,8 +12,10 @@ html, body {
 
 /* Hero/header styles (stacked layout) */
 .hero {
-	background-color: #0a66d1;
-	color: #ffffff;
+  color: #ffffff;
+  /* stronger gradient: lighter + mid + darker blue for more intensity */
+  background: linear-gradient(135deg, #6fb4ff 0%, #0a66d1 45%, #00224f 100%);
+  background-repeat: no-repeat;
 }
 .hero-inner {
 	max-width: 1000px;
@@ -36,8 +38,10 @@ html, body {
 	font-size: 1.8rem;
 }
 .hero-blurb {
-	margin: 8px 0 0 0;
-	max-width: 720px;
+  margin: 12px 0 0 0;
+  max-width: 620px; /* narrower for readability */
+  line-height: 1.6; /* more breathing room */
+  font-size: 1rem;
 }
 
 /* Simple styling for timeline images */
@@ -75,4 +79,188 @@ html, body {
 		padding-top: 12px;
 		padding-bottom: 24px;
 	}
+}
+
+/* Timeline layout and card styles */
+.timeline {
+	display: flex; /* default: stack vertically on narrow viewports via column below */
+	flex-direction: column;
+	gap: 16px;
+	padding: 20px 16px;
+}
+
+.card {
+	background: #ffffff;
+	border: 2px solid #0a66d1;
+	border-radius: 12px;
+	padding: 18px;
+	/* deeper neutral shadow with slight blue tint for depth */
+	box-shadow: 0 20px 50px rgba(2,6,23,0.12), 0 6px 20px rgba(10,102,209,0.06);
+	max-height: 340px; /* collapsed card max height */
+	width: 100%;
+	box-sizing: border-box;
+	transition: max-height .36s ease, transform .22s ease, box-shadow .22s ease;
+	transform-origin: center;
+	overflow: hidden;
+	position: relative;
+	will-change: transform, box-shadow, opacity;
+	contain: paint;
+}
+
+/* Paragraph placed below image in normal flow; hidden by max-height until expand */
+.card p {
+	margin: 12px 0 0 0;
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
+	transition: max-height .36s ease, opacity .22s ease;
+}
+
+/* Keep images small inside collapsed cards so page height stays low */
+.card img,
+.timeline-img {
+	width: 100%;
+	display: block;
+	height: 160px; /* fixed thumbnail height so all images match */
+	object-fit: cover;
+	border-radius: 8px;
+	transition: transform .28s ease, opacity .18s ease;
+	transform-origin: center;
+	position: relative;
+	z-index: 1;
+	/* ensure any oversized images are clipped rather than expanding the card */
+	overflow: hidden;
+}
+
+@media (hover: hover) {
+	.card:hover img,
+	.card:focus img {
+		transform: scale(1.05); /* scale image without changing layout */
+	}
+}
+
+/* Hover/focus expansion for devices that support hover */
+@media (hover: hover) {
+	.card:hover,
+	.card:focus-within,
+	.card:focus {
+		transform: translateY(-6px) scale(1.02);
+		box-shadow: 0 18px 40px rgba(10,102,209,0.12), 0 10px 28px rgba(0,0,0,0.09);
+		z-index: 30;
+		max-height: 720px; /* expanded max height to reveal text below image */
+	}
+
+	.card:hover p,
+	.card:focus-within p,
+	.card:focus p {
+		opacity: 1;
+		max-height: 420px;
+	}
+}
+
+/* Also allow keyboard-only expansion via focus */
+.card:focus {
+	outline: none;
+}
+
+/* Desktop: horizontal timeline with x-axis scroll */
+@media (min-width: 900px) {
+	.timeline {
+		flex-direction: row;
+		align-items: flex-start;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		gap: 20px;
+		padding: 28px 24px;
+		scroll-behavior: smooth;
+		scroll-snap-type: x mandatory;
+	}
+
+	/* Center the timeline wrapper and limit its width so content doesn't appear cut off */
+	.timeline-wrap {
+		width: 75%; /* desktop uses ~75% of viewport width */
+		max-width: 1100px; /* cap for very large screens */
+		margin: 0 auto; /* center */
+		padding: 0 8px; /* small horizontal breathing room */
+	}
+
+	.timeline::-webkit-scrollbar {
+		height: 10px;
+	}
+
+	.timeline::-webkit-scrollbar-thumb {
+		background: #cbd5e1;
+		border-radius: 999px;
+	}
+
+	.card {
+		flex: 0 0 320px; /* fixed card width on desktop */
+		width: 320px;
+		scroll-snap-align: start;
+	}
+}
+
+/* Timeline wrapper and arrow buttons */
+.timeline-wrap {
+	position: relative;
+}
+
+.timeline-btn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	display: none; /* shown on desktop */
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	border: 1px solid #e5e7eb;
+	background: rgba(255,255,255,0.95);
+	box-shadow: 0 2px 6px rgba(15,23,42,0.08);
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	cursor: pointer;
+}
+.timeline-prev { left: -64px; }
+.timeline-next { right: -64px; }
+.timeline-btn:focus { outline: 2px solid #0a66d1; outline-offset: 2px; }
+
+@media (min-width: 900px) {
+		.timeline-btn { display: flex; }
+		.timeline-btn { z-index: 20; }
+}
+
+/* Restore original button size and subtler shadow */
+.timeline-btn {
+	width: 36px;
+	height: 36px;
+	font-size: 20px;
+	box-shadow: 0 4px 10px rgba(15,23,42,0.12);
+}
+
+/* Center the page control paragraph at the bottom */
+body > p:last-of-type {
+  text-align: center;
+  margin: 28px 16px 56px;
+  color: #374151;
+  font-size: 0.98rem;
+}
+
+/* Small tweaks for very small screens */
+@media (max-width: 420px) {
+	.card {
+		padding: 14px;
+	}
+}
+
+/* Desktop: slightly taller collapsed cards and larger thumbnails */
+@media (min-width: 900px) {
+	.card { max-height: 420px; }
+	.card img, .timeline-img { height: 220px; }
+}
+
+/* Mobile: always show text (no hover) and allow taller cards to fit image + text */
+@media (max-width: 899px) {
+	.card { max-height: 520px; }
+	.card p { max-height: 420px; opacity: 1; }
 }
