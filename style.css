@@ -1,1 +1,78 @@
 /* Add your CSS here */
+
+/* Global font: uniform sans-serif system stack */
+html, body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: #111827;
+	margin: 0;
+	padding: 0;
+}
+
+/* Hero/header styles (stacked layout) */
+.hero {
+	background-color: #0a66d1;
+	color: #ffffff;
+}
+.hero-inner {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 28px 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+	justify-content: center;
+	text-align: center;
+}
+.nav-logo {
+	width: 48px;
+	height: auto;
+	display: block;
+}
+.hero-content h1 {
+	margin: 0;
+	font-size: 1.8rem;
+}
+.hero-blurb {
+	margin: 8px 0 0 0;
+	max-width: 720px;
+}
+
+/* Simple styling for timeline images */
+.timeline-img {
+	width: 100%;
+	max-width: 320px;
+	height: auto;
+	display: block;
+	margin: 0 0 12px 0;
+}
+
+/* Larger, more spacious hero on wider screens */
+@media (min-width: 900px) {
+	.hero-inner {
+		max-width: 1200px;
+		padding: 56px 32px;
+		gap: 18px;
+	}
+
+	.nav-logo {
+		width: 96px;
+	}
+
+	.hero-content h1 {
+		font-size: 2.6rem;
+	}
+
+	.hero-blurb {
+		font-size: 1.05rem;
+		max-width: 900px;
+	}
+
+	/* Give the hero more vertical presence */
+	.hero {
+		padding-top: 12px;
+		padding-bottom: 24px;
+	}
+}
